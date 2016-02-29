@@ -1,3 +1,4 @@
+import pickle
 import pandas as pd
 from nltk.tokenize import sent_tokenize, word_tokenize
 
@@ -36,3 +37,12 @@ class Text(object):
         self._raw_text = raw_text
         split_text = _split_into_words(self._raw_text)
         self.tags = _index_table(split_text)
+
+    def to_pickle(self, filename):
+        with open(filename, "wb") as out_file:
+            pickle.dump(self, out_file)
+
+    @staticmethod
+    def from_pickle(filename):
+        with open(filename, "rb") as in_file:
+            return pickle.load(in_file)
