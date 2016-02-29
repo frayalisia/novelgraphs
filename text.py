@@ -35,8 +35,8 @@ def _index_table(split_sent):
 class Text(object):
     def __init__(self, raw_text):
         self._raw_text = raw_text
-        split_text = _split_into_words(self._raw_text)
-        self.tags = _index_table(split_text)
+        self.tokens = _split_into_words(self._raw_text)
+        self.tags = _index_table(self.tokens)
 
     def to_pickle(self, filename):
         with open(filename, "wb") as out_file:
