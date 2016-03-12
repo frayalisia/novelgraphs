@@ -1,4 +1,4 @@
-from annotator import Annotator
+from .annotator import Annotator
 import json
 import pandas as pd
 

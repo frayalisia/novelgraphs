@@ -1,4 +1,4 @@
-from annotator import Annotator
+from .annotator import Annotator
 
 right_side_marks = ["``", '«', '„', '“', '‘']
 left_side_marks = ["''", '»', '“', '”', '’']

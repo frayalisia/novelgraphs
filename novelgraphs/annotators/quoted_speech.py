@@ -1,4 +1,4 @@
-from annotator import Annotator
+from .annotator import Annotator
 
 quotation_marks = ["``", '«', '„', '“', '‘', '"', "'", "''", '»', '“', '”', '’', '—']
 right_side_marks = ["``", '«', '„', '“', '‘']

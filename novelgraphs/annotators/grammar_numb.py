@@ -1,4 +1,4 @@
-from annotator import Annotator
+from .annotator import Annotator
 import json
 
 def _get_singular_or_plural(token):

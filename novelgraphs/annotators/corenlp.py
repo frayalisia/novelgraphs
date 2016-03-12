@@ -1,6 +1,6 @@
 import json
 import subprocess
-from annotator import Annotator
+from .annotator import Annotator
 
 
 def _table_to_list(splitted_sent):
