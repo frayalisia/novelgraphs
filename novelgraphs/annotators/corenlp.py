@@ -38,7 +38,7 @@ def _parse_json(table):
             token_id = token['index'] - 1
             location = sent_tok_index.get_loc((sentence_id, token_id))
             lemma = token['lemma']
-            table.loc[location, 'Lemma'] = lemma
+            table.loc[location, 'Lemma'] = lemma.lower()
             ner = token['ner']
             table.loc[location, 'NER'] = ner
             pos = token['pos']
