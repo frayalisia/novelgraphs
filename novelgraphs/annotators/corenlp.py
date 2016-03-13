@@ -1,5 +1,6 @@
 import json
 import subprocess
+import pandas as pd
 from .annotator import Annotator
 
 
@@ -29,25 +30,26 @@ def _parse_json(table):
     list_columns = ['Lemma', 'Pos', 'NER', 'DepParse', 'DepRel']
     for column in list_columns:
         table[column] = None
+    sent_tok_index = pd.MultiIndex.from_arrays([table.SentenceID, table.TokenID])
     for sentence in text['sentences']:
 #         print(sentence['index'])
         sentence_id = sentence['index']
-        sent = (table.SentenceID == sentence_id)
         for token in sentence['tokens']:
-            token_id = (token['index']-1)
-            tok = (table.TokenID == token_id)
+            token_id = token['index'] - 1
+            location = sent_tok_index.get_loc((sentence_id, token_id))
             lemma = token['lemma']
-            table.loc[tok & sent, 'Lemma'] = lemma
+            table.loc[location, 'Lemma'] = lemma
             ner = token['ner']
-            table.loc[tok & sent, 'NER'] = ner
+            table.loc[location, 'NER'] = ner
             pos = token['pos']
-            table.loc[tok & sent, 'Pos'] = pos
+            table.loc[location, 'Pos'] = pos
 #             speaker = token.get('speaker')
 #             table.loc[tok & sent, 'Speaker'] = speaker
         for token in sentence['collapsed-ccprocessed-dependencies']:
-            table.loc[(table.TokenID == (token['dependent']-1)) & sent, 'DepParse'] = token['governor']-1
-            table.loc[(table.TokenID == (token['dependent']-1)) & sent, 'DepRel'] = token['dep']
-
+            token_id = token['dependent'] - 1
+            location= sent_tok_index.get_loc((sentence_id, token_id))
+            table.loc[location, 'DepParse'] = token['governor']-1
+            table.loc[location, 'DepRel'] = token['dep']
 
 class CoreNLP(Annotator):
     def __init__(self, corenlp_path="./stanford-corenlp-full-2015-12-09/"):
