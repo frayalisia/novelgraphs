@@ -1,6 +1,5 @@
 import json
 import subprocess
-import pandas as pd
 from .annotator import Annotator
 
 
@@ -31,13 +30,13 @@ def _parse_json(table):
     list_columns = ['Lemma', 'Pos', 'NER', 'DepParse', 'DepRel']
     for column in list_columns:
         table[column] = None
-    sent_tok_index = pd.MultiIndex.from_arrays([table.SentenceID, table.TokenID])
+    table.set_index(['SentenceID', 'TokenID'], inplace=True)
     for sentence in text['sentences']:
 #         print(sentence['index'])
         sentence_id = sentence['index']
         for token in sentence['tokens']:
             token_id = token['index'] - 1
-            location = sent_tok_index.get_loc((sentence_id, token_id))
+            location = (sentence_id, token_id)
             lemma = token['lemma']
             table.loc[location, 'Lemma'] = lemma.lower()
             ner = token['ner']
@@ -48,9 +47,11 @@ def _parse_json(table):
 #             table.loc[tok & sent, 'Speaker'] = speaker
         for token in sentence['collapsed-ccprocessed-dependencies']:
             token_id = token['dependent'] - 1
-            location= sent_tok_index.get_loc((sentence_id, token_id))
+            location = (sentence_id, token_id)
             table.loc[location, 'DepParse'] = token['governor']-1
             table.loc[location, 'DepRel'] = token['dep']
+    table.reset_index(inplace=True)
+
 
 class CoreNLP(Annotator):
     def __init__(self, corenlp_path="./stanford-corenlp-full-2015-12-09/", nthreads=1):
