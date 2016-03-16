@@ -1,6 +1,5 @@
 import subprocess
 import json
-from operator import itemgetter
 from nltk.tokenize import sent_tokenize, word_tokenize
 import pandas as pd
 from .annotator import Annotator
@@ -21,7 +20,8 @@ def _tokenize_corenlp(text, corenlp_path):
                         stdout=info_file, stderr=info_file)
     with open('text.txt.json', 'r') as out_file:
         tokenized = json.load(out_file)
-    return [list(map(itemgetter('originalText'), sentence['tokens']))
+    return [[token['originalText'].replace(' ', '')
+             for token in sentence['tokens']]
             for sentence in tokenized['sentences']]
 
 
