@@ -1,30 +1,32 @@
 from .annotator import Annotator
 
-quotation_marks = ["``", '«', '„', '“', '‘', '"', "'", "''", '»', '“', '”', '’', '—']
+quotation_marks = ['"']
 right_side_marks = ["``", '«', '„', '“', '‘']
 left_side_marks = ["''", '»', '“', '”', '’']
 
-def _qspeech(token):
-    '''Checking the instances of speech'''
-    if token in quotation_marks:
-        return True
-    else:
-        return False
+def _quoted_speech_marks(table):
+    '''Find instanses of quoted speech, if it starts with right_side_marks
+    and ends with left_side_marks, also find double quotes.
+    Then add "Speech_mark" into the table'''
+    table['Dialog'] = None
+    first, second = None, None
 
-def _qspeech_ht(token):
-    '''Marking heads and tails in speech'''
-    if token in left_side_marks:
-        return "TAIL"
-    elif token in right_side_marks:
-        return "HEAD"
-    else:
-        return None
-
-def _add_speech_marks(table):
-    table['Qspeech'] = table.Token.apply(_qspeech)
-    table['QspeechHT'] = table.Token.apply(_qspeech_ht)
-
+    for i in table.SentenceID.index:
+        sent = table[table.SentenceID == i]
+        for s in sent.index:
+            if sent.loc[s, 'Token'] in right_side_marks:
+                first = s
+            elif sent.loc[s, 'Token'] in left_side_marks:
+                second = s
+                table.loc[first:second, 'Dialog'] = 1
+            elif sent.loc[s, 'Token'] in quotation_marks:
+                if first is None:
+                    first = s
+                elif second is None:
+                    second = s
+                    table.loc[first:second, 'Dialog'] = 1
+                    first, second = None, None
 
 class Quoted_Speech(Annotator):
     def annotate(self, text):
-        _add_speech_marks(text.tags)
+        _quoted_speech_marks(text.tags)
