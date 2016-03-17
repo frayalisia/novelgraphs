@@ -5,5 +5,6 @@ from .nernpid import NerNpID
 from .tokenizer import Tokenizer
 from .quote import Quote
 from .quoted_speech import Quoted_Speech
-from .quoted_speech_rl import Quoted_Speech_rl
+from .quoted_speech_ht import Quoted_Speech_ht
 from .sentiment import Sentiment
+from .first_person import First_person
