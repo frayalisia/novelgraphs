@@ -1,8 +1,10 @@
 from .annotator import Annotator
 import json
+import os
 
 def _count_first_person(table):
-    with open('say.json', 'r') as file:
+    path = os.path.dirname(os.path.realpath(__file__))
+    with open(path + '/json/say.json', 'r') as file:
         say = json.load(file)
     h3 = []
     h4 = []

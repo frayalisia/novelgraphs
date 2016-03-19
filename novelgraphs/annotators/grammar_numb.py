@@ -1,10 +1,12 @@
 from .annotator import Annotator
 import json
+import os
 
 def _get_singular_or_plural(token):
-    with open('./json/sg.json', 'r') as file:
+    path = os.path.dirname(os.path.realpath(__file__))
+    with open(path + '/json/sg.json', 'r') as file:
         sg = json.load(file)
-    with open('./json/pl.json', 'r') as file:
+    with open(path + '/json/pl.json', 'r') as file:
         pl = json.load(file)
 
     if token in sg:

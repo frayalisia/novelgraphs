@@ -1,15 +1,18 @@
 from .annotator import Annotator
 import json
+import os
 
 def _make_animacy_mark(table):
-    with open('./json/animacy.json', 'r') as file:
+    path = os.path.dirname(os.path.realpath(__file__))
+    with open(path + '/json/animacy.json', 'r') as file:
         animacy = json.load(file)
     table['Animacy'] = table.Lemma.apply(lambda x: True if x in animacy else None)
 
 def _make_gender_mark(token):
-    with open('./json/male.json', 'r') as file:
+    path = os.path.dirname(os.path.realpath(__file__))
+    with open(path + '/json/male.json', 'r') as file:
         male = json.load(file)
-    with open('./json/female.json', 'r') as file:
+    with open(path + '/json/female.json', 'r') as file:
         female = json.load(file)
 
     if token in male:
