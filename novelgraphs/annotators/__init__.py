@@ -1,4 +1,5 @@
 from .animgender import AnimGender
+from .character import Character
 from .corenlp import CoreNLP
 from .grammar_numb import Grammatical_number
 from .nernpid import NerNpID
