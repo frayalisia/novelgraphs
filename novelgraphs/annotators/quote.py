@@ -28,6 +28,8 @@ class Quote(Annotator):
     def annotate(self, text):
         _table_to_list(text.tokens)
         _corenlp_quote_annotate(self._corenlp_path)
-        text.tags['QuotationID'] = pd.read_csv(
+        quotation_ids = pd.read_csv(
             'quotes.txt', sep='\t', quoting=3,
             header=None, usecols=[1], squeeze=True)
+        quotation_ids.replace(['null'], [None], inplace=True)
+        text.tags['QuotationID'] = quotation_ids
