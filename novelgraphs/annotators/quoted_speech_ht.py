@@ -25,6 +25,6 @@ def _add_speech_marks(table):
     table['QspeechHT'] = table.Token.apply(_qspeech_ht)
 
 
-class Quoted_Speech_ht(Annotator):
+class QuotedSpeechHT(Annotator):
     def annotate(self, text):
         _add_speech_marks(text.tags)

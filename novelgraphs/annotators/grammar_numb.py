@@ -19,6 +19,6 @@ def _get_singular_or_plural(token):
 def _get_grammatical_numb(table):
     table['Grammatical_number'] = table.Lemma.apply(_get_singular_or_plural)
 
-class Grammatical_number(Annotator):
+class GrammaticalNumber(Annotator):
     def annotate(self, text):
         _get_grammatical_numb(text.tags)

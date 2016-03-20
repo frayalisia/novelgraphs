@@ -27,6 +27,6 @@ def _quoted_speech_marks(table):
                     table.loc[first:second, 'Dialog'] = 1
                     first, second = None, None
 
-class Quoted_Speech(Annotator):
+class QuotedSpeech(Annotator):
     def annotate(self, text):
         _quoted_speech_marks(text.tags)
