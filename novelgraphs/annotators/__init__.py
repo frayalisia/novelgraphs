@@ -3,6 +3,7 @@ from .character import Character
 from .corenlp import CoreNLP
 from .grammar_numb import Grammatical_number
 from .nernpid import NerNpID
+from .pipeline import Pipeline
 from .tokenizer import Tokenizer
 from .quote import Quote
 from .quoted_speech import Quoted_Speech
