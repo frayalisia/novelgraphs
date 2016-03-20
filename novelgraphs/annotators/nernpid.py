@@ -19,6 +19,12 @@ def _add_nercorenlp_id(text):
                 text.loc[i, 'NerNpID'] = cur_id
             prev_tag = cur_tag
 
+def _fix_ner(table):
+    bugs = table.Lemma.isin(['(', ')', 'xi', 'viii', 'iii', 'vi', 'ii', '-', '“',
+                                '”', '’s', '"', '—', '‘'])
+    table.loc[bugs, 'NER'] = 'O'
+
 class NerNpID(Annotator):
     def annotate(self, text):
+        _fix_ner(text.tags)
         _add_nercorenlp_id(text.tags)
