@@ -1,19 +1,11 @@
 from .annotator import Annotator
-import json
-import os
+
+I_RATIO_THRESHOLD = 0.4
 
 def _count_first_person(table):
-    h4 = []
-    path = os.path.dirname(os.path.realpath(__file__))
-    with open(path + '/json/say.json', 'r') as file:
-        say = json.load(file)
-
-    for s in table[table.Dialog != 1].index:
-        if (table.Token.loc[s] == 'I' and table.Pos.loc[s] == 'PRP'):
-            h4.append(table.Lemma.loc[s])
-
-    if len(h4) / (sum((table.Token == 'I') & (table.Pos == 'PRP'))) < 0.3:
-        return True
+    withoutcontext = sum((table.Dialog != 1) & (table.Token == 'I') & (table.Pos == 'PRP'))
+    total = sum((table.Token == 'I') & (table.Pos == 'PRP'))
+    return withoutcontext / total > I_RATIO_THRESHOLD
 
 class FirstPerson(Annotator):
     def annotate(self, text):
