@@ -121,11 +121,7 @@ def _add_first_person(text):
     item_numb = text.tags.CharacterID.max() + 1
     if text.first_person:
         text.tags.loc[((text.tags.Dialog != 1) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
-<<<<<<< HEAD
                       'CharacterID'] = item_numb
-=======
-                      'Character'] = item_numb
->>>>>>> 3340e3772640357244ab81fd233febc63c273cd5
     text.characters += [('narrator',)]
 
 class Character(Annotator):
