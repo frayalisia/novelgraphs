@@ -53,7 +53,7 @@ def _find_unique_lemmas(cliques):
 def _short_representations(cliques, name_phrases):
     lemma_to_nps = _lemma_to_nps_dict(name_phrases)
     unambiguous_lemmas = _find_unique_lemmas(cliques)
-    
+
     short_repr = [None] * len(cliques)
     for clique_id, clique in enumerate(cliques):
         representations = set()
@@ -117,6 +117,12 @@ def _add_character_ids(tags, np_groups, name_phrases, cliques):
                 last[np] = clique_id
         tags.loc[list(group.index), 'CharacterID'] = clique_id
 
+def _add_first_person(text):
+    item_numb = text.tags.CharacterID.max() + 1
+    if text.first_person:
+        text.tags.loc[((text.tags.Dialog != 1) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
+                      'Character'] = item_numb
+    text.characters += [('narrator',)]
 
 class Character(Annotator):
     def annotate(self, text):
@@ -125,3 +131,4 @@ class Character(Annotator):
         character_cliques = _find_character_cliques(name_phrases)
         text.characters = _short_representations(character_cliques, name_phrases)
         _add_character_ids(text.tags, np_groups, name_phrases, character_cliques)
+        _add_first_person(text)
