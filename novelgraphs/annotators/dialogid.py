@@ -1,7 +1,7 @@
 from .annotator import Annotator
 
 def _get_dialogies(table):
-    sentences_with_speakers = list(set(table.loc[table.Dialog == 1, 'SentenceID']))
+    sentences_with_speakers = list(set(table.loc[~table.QuotationID.isnull(), 'SentenceID']))
 
     dialogues = [[sentences_with_speakers[0], None]]
     for i in range(1, len(sentences_with_speakers)):
