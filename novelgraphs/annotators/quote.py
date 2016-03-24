@@ -1,5 +1,6 @@
 import os
 import subprocess
+import numpy as np
 import pandas as pd
 from .annotator import Annotator
 
@@ -10,18 +11,15 @@ right_side_marks = ["''", '»', '“', '”', '’']
 
 
 def _ones_to_ids(table):
-    cur_id = -1
-    prev_tag = None
-    for i in table.index:
-        cur_tag = table.loc[i, 'QuotationID']
-        if cur_tag is None:
-            pass
-        elif cur_tag == prev_tag:
-            table.loc[i, 'QuotationID'] = cur_id
-        else:
-            cur_id += 1
-            table.loc[i, 'QuotationID'] = cur_id
-        prev_tag = cur_tag
+    array = table.QuotationID.values
+    changes = np.where(array[:-1] != array[1:])[0]
+    if array[0] is not None:
+        changes = np.insert(changes, 0, -1)
+    if array[-1] is not None:
+        changes = np.append(changes, len(array) - 1)
+    for i, interval in enumerate(zip(changes[::2], changes[1::2])):
+        start, end = interval
+        table.loc[(start + 1):end, 'QuotationID'] = i
 
 
 def _quote_annotate(table):
@@ -45,6 +43,7 @@ def _quote_annotate(table):
                 second = s
                 table.loc[first:second, 'QuotationID'] = 1
                 first, second = None, None
+
 
 def _table_to_list(splitted_sent):
     with open('tokens.txt', 'w') as tokens_file:
