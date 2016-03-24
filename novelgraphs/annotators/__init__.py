@@ -1,6 +1,7 @@
 from .animgender import AnimGender
 from .character import Character
 from .corenlp import CoreNLP
+from .dialog import Dialog
 from .grammar_numb import GrammaticalNumber
 from .nernpid import NerNpID
 from .pipeline import Pipeline
@@ -9,4 +10,3 @@ from .quote import Quote
 from .quoted_speech_ht import QuotedSpeechHT
 from .sentiment import Sentiment
 from .first_person import FirstPerson
-from .dialogid import DialogID
