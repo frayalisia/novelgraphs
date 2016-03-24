@@ -31,22 +31,20 @@ def _quote_annotate(table):
     table['QuotationID'] = None
     first, second = None, None
 
-    for i in table.SentenceID.index:
-        sent = table[table.SentenceID == i]
-        for s in sent.index:
-            if sent.loc[s, 'Token'] in left_side_marks:
+    for s in table.index[table.Token.isin(quotation_marks + left_side_marks +
+                                          right_side_marks)]:
+        if table.loc[s, 'Token'] in left_side_marks:
+            first = s
+        elif table.loc[s, 'Token'] in right_side_marks:
+            second = s
+            table.loc[first:second, 'QuotationID'] = 1
+        elif table.loc[s, 'Token'] in quotation_marks:
+            if first is None:
                 first = s
-            elif sent.loc[s, 'Token'] in right_side_marks:
+            elif second is None:
                 second = s
                 table.loc[first:second, 'QuotationID'] = 1
-            elif sent.loc[s, 'Token'] in quotation_marks:
-                if first is None:
-                    first = s
-                elif second is None:
-                    second = s
-                    table.loc[first:second, 'QuotationID'] = 1
-                    first, second = None, None
-
+                first, second = None, None
 
 def _table_to_list(splitted_sent):
     with open('tokens.txt', 'w') as tokens_file:
