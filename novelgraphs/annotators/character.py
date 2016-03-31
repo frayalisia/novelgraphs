@@ -120,7 +120,7 @@ def _add_character_ids(tags, np_groups, name_phrases, cliques):
 def _add_first_person(text):
     item_numb = text.tags.CharacterID.max() + 1
     if text.first_person:
-        text.tags.loc[((text.tags.Dialog != 1) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
+        text.tags.loc[((text.tags.QuotationID.isnull()) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
                       'CharacterID'] = item_numb
     text.characters += [('narrator',)]
 
