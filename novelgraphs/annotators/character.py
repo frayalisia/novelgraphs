@@ -122,13 +122,14 @@ def _add_first_person(text):
     if text.first_person:
         text.tags.loc[((text.tags.QuotationID.isnull()) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
                       'CharacterID'] = item_numb
-    text.characters += [('narrator',)]
+    text.characters.append('narrator')
 
 class Character(Annotator):
     def annotate(self, text):
         np_groups = _get_np_groups(text.tags)
         name_phrases = _get_name_phrases(np_groups)
         character_cliques = _find_character_cliques(name_phrases)
-        text.characters = _short_representations(character_cliques, name_phrases)
+        short_reprs = _short_representations(character_cliques, name_phrases)
+        text.characters = list(map(' '.join, short_reprs))
         _add_character_ids(text.tags, np_groups, name_phrases, character_cliques)
         _add_first_person(text)
