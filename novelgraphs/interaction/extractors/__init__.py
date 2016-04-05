@@ -3,3 +3,4 @@ from .sentences import Sentences
 from .tokendistance import TokenDistance
 from .tokensequence import TokenSequence
 from .sentencedistance import SentenceDistance
+from .tokendependencies import TokenDependencies
