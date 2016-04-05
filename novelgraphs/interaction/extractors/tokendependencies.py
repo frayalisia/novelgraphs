@@ -11,6 +11,7 @@ class TokenDependencies(InteractionExtractor):
 
         interactions = []
         table = text.tags
+        
         for _, sentence in table.groupby('SentenceID'):
             for i in sentence.index:
                 if (sentence.loc[i, 'Pos'] in ['VBD', 'VBN', 'VBP'] or sentence.loc[i, 'Lemma'] in say):
