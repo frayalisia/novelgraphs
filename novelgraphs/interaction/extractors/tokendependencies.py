@@ -16,9 +16,9 @@ class TokenDependencies(InteractionExtractor):
             for i in sentence.index:
                 if (sentence.loc[i, 'Pos'] in ['VBD', 'VBN', 'VBP'] or sentence.loc[i, 'Lemma'] in say):
                     left = sentence.loc[:i-1]
-                    left_el = left[sentence.CharacterID.notnull()].index
+                    left_el = left[left.CharacterID.notnull()].index
                     right = sentence.loc[i:]
-                    right_el = right[sentence.CharacterID.notnull()].index
+                    right_el = right[right.CharacterID.notnull()].index
                     for e in left_el:
                         if sentence.loc[e, 'DepParse'] == sentence.loc[i, 'TokenID']:
                             for r in right_el:
