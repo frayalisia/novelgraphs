@@ -3,7 +3,8 @@ import networkx as nx
 
 def _weights2nx(weights, chars):
     return [(chars[pair[0]], chars[pair[1]], weight)
-            for pair, weight in weights.items()]
+            for pair, weight in weights.items()
+            if weight is not None]
 
 
 class NovelGraph(object):
