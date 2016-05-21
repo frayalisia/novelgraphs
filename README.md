@@ -23,34 +23,71 @@ Python3 tool for automatic text annotation and extraction networks of characters
 ```python
 import novelgraphs as ng
 ```
-### Import annonators
-```python
-core = ng.annotators.CoreNLP()
-np = ng.annotators.NerNpID()
-senti = ng.annotators.Sentiment()
-```
 
 ### Wrap file
 ```python
 text = ng.Text('some text is here', corenlp_path='path to CoreNLP library')
 ```
 
+### Import annonators
+```python
+core = ng.annotators.CoreNLP()
+np = ng.annotators.NerNpID()
+senti = ng.annotators.Sentiment()
+```
+Annotators | Annotation
+--- | --- 
+[CoreNLP] (http://stanfordnlp.github.io/CoreNLP) | pos, lemma, ner, parse (syntax dependencies) 
+QuotationID | quote id (find quotes in text)
+NerNpID | ner id (find complex ner-items)
+Sentiment | sentiment of words (using [AFINN-111] (https://github.com/fnielsen/afinn))
+DialogID | dialog id (collect quotes to the dialog)
+FirstPerson | find narrator in text
+Character | character id (find characters in text)
+
+
 ### Make annotation pipeline
 ```python
 pipeline = ng.annotators.Pipeline([core, np, senti])
 pipeline.annotate(text)
 ```
+To make pipeline easier, look at dependencies between different annotators.
+
+| Annotator | Dependencies | Dependencies | Dependencies |
+| --- | --- | --- | --- |
+| CoreNLP | 
+| QuotationID | 
+| NERNpID | CoreNLP | 
+| Sentiment | CoreNLP | 
+| DialogID | QuotationID |
+| FirstPerson | CoreNLP | QuotationID |
+| Character | CoreNLP | NERNpID | FirstPerson | 
+
+
 Annotated table will look like this. 
 <table border="1" class="dataframe">  <thead>    <tr style="text-align: right;">     <th></th>      <th>SentenceID</th>      <th>TokenID</th>      <th>Token</th>      <th>Lemma</th>      <th>Pos</th>      <th>NER</th>      <th>DepParse</th>      <th>DepRel</th>      <th>NerNpID</th>      <th>Sentiment</th>      <th>QuotationID</th>      <th>DialogID</th>      <th>CharacterID</th>    </tr>  </thead>  <tbody>   <tr>      <th>0</th>      <td>0</td>      <td>0</td>      <td>A</td>     <td>a</td>     <td>DT</td>     <td>O</td>      <td>1</td>      <td>det</td>      <td>None</td>      <td>NaN</td>      <td>None</td>      <td>None</td>      <td>None</td>    </tr>    <tr>      <th>1</th>      <td>0</td>      <td>1</td>      <td>STUDY</td>      <td>study</td>      <td>NN</td>      <td>O</td>      <td>-1</td>      <td>ROOT</td>      <td>None</td>      <td>NaN</td>      <td>None</td>      <td>None</td>      <td>None</td>    </tr>    <tr>      <th>2</th>      <td>0</td>      <td>2</td>      <td>IN</td>      <td>in</td>      <td>IN</td>      <td>O</td>      <td>4</td>      <td>case</td>      <td>None</td>      <td>NaN</td>      <td>None</td>      <td>None</td>      <td>None</td>    </tr>    <tr>      <th>3</th>      <td>0</td>      <td>3</td>      <td>SCARLET</td>      <td>scarlet</td>      <td>NNP</td>      <td>O</td>      <td>4</td>      <td>compound</td>      <td>None</td>      <td>NaN</td>      <td>None</td>      <td>None</td>      <td>None</td>    </tr>    <tr>      <th>4</th>      <td>0</td>      <td>4</td>      <td>Table</td>      <td>table</td>      <td>NNP</td>      <td>O</td>      <td>1</td>      <td>nmod:in</td>      <td>None</td>      <td>NaN</td>      <td>None</td>      <td>None</td>      <td>None</td>    </tr>  </tbody></table>
 
 ### Import extractors and aggregators
+##### How to import
 ```python
 dialog = ng.interaction.extractors.Dialog()
-sentences = ng.interaction.extractors.Sentences()
 
 count = ng.interaction.aggregators.Count()
-sentiment = ng.interaction.aggregators.Sentiment()
 ```
+##### About extractors and aggregators
+Extractors | How-to
+--- | ---
+TokenDistance | distance between characters is n-tokens (n=15)
+Sentence | characters are in 1 sentence 
+SentenceDistance | distance between characters is not more than n-sentences (n=2) 
+Dialog | characters are in 1 dialog
+TokenSequence | character--verb--character
+TokenDependencies | character ... --verb-- ...character (+ syntactic dependencies between verb and characters)
+
+Aggregators | How-to
+--- | ---
+Count | frequency of interactions between characters
+Sentiment | average sentiment for the context, where characters interact
 
 ### Make graph
 ```python
