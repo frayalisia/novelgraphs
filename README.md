@@ -9,11 +9,11 @@ Python3 tool for automatic text annotation and extraction networks of characters
 * sentiment analysis (using [AFINN-111](https://github.com/wooorm/afinn-111))
 
 # Dependencies
-- NetworkX
-- pandas
-- numpy
+- networkx >= 1.10
+- pandas >= 0.18.0
+- numpy >= 1.10.4
+- nltk >= 3.1
 - [Stanford CoreNLP pack](http://stanfordnlp.github.io/CoreNLP/index.html)
-- nltk
 
 # Installation
 ```git clone https://github.com/frayalisia/novelgraphs.git```
