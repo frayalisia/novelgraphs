@@ -122,7 +122,7 @@ def _add_first_person(text):
     if text.first_person:
         text.tags.loc[((text.tags.QuotationID.isnull()) & (text.tags.Token == 'I') & (text.tags.Pos == 'PRP')),
                       'CharacterID'] = item_numb
-    text.characters.append('narrator')
+        text.characters.append('narrator')
 
 class Character(Annotator):
     def annotate(self, text):
