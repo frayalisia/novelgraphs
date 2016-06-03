@@ -28,6 +28,13 @@ import novelgraphs as ng
 ```python
 text = ng.Text('some text is here', corenlp_path='path to CoreNLP library')
 ```
+_Parameters:_
+
+`tokenizer=None` - No tokenization.
+
+`tokenizer='corenlp'` - Stanford CoreNLP tokenization (by default).
+
+`tokenizer='nltk'`- NLTK tokenization.
 
 ### Import annonators
 ```python
