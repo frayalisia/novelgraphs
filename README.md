@@ -42,6 +42,7 @@ QuotationID | quote id (find quotes in text)
 NerNpID | ner id (find complex ner-items)
 Sentiment | sentiment of words (using [AFINN-111] (https://github.com/fnielsen/afinn))
 DialogID | dialog id (collect quotes to the dialog)
+DialogOutQuotesID | dialog without quotes (only remarks)
 FirstPerson | find narrator in text
 Character | character id (find characters in text)
 
@@ -60,6 +61,7 @@ To make pipeline easier, look at dependencies between different annotators.
 | NERNpID | CoreNLP | 
 | Sentiment | CoreNLP | 
 | DialogID | QuotationID |
+| DialogOutQuotesID | DialogID | QuotationID
 | FirstPerson | CoreNLP | QuotationID |
 | Character | CoreNLP | NERNpID | FirstPerson | 
 
@@ -81,6 +83,7 @@ TokenDistance | distance between characters is n-tokens (n=15)
 Sentence | characters are in 1 sentence 
 SentenceDistance | distance between characters is not more than n-sentences (n=2) 
 Dialog | characters are in 1 dialog
+DialogWithoutQuote | characters in 1 dialog (except quotes)
 TokenSequence | character--verb--character
 TokenDependencies | character ... --verb-- ...character (+ syntactic dependencies between verb and characters)
 
