@@ -10,3 +10,4 @@ from .quote import Quote
 from .quoted_speech_ht import QuotedSpeechHT
 from .sentiment import Sentiment
 from .first_person import FirstPerson
+from .dialogoutquots import DialogOutQuotes
